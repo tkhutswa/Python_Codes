@@ -8,8 +8,12 @@ from datetime import datetime
 from datetime import date
 import os
 import socket
+from dotenv import load_dotenv
 
+load_dotenv('.env')
 
+password: str = os.getenv('PASSWORD')
+username: str = os.getenv('USERNAME')
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
