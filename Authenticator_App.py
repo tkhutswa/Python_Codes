@@ -63,12 +63,14 @@ def code_gen():
             time_schedule.append(access_codes)
             pass_logger()
             clear()
+            
             otp_view=Label(root, text=code_gen)
             
         
         else:
-            messagebox.showinfo("Access Denied", "User Not Found!")
+            messagebox.showerror("Access Denied", "User Not Found!")
             fail_logger()
+            clear()
 
 #create
 name_user=Label(text="Username", font=("Arial", 15))
