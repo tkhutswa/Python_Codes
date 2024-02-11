@@ -38,7 +38,48 @@ house_numbers = []
 max_length = 5
 for i in range(6600, 7000, 4):
     house_numbers.append(i)
+
+def main_menu():           #print("token:", token)
+    global house_num
+    print(1, "Enter House Number")
+    print(2, "Generate Code")
+    print(3, "Help")
+    option = int(input("\n"))
+    match option:
+        case 1:
+            print("Enter House Number")
+            house_num = int(input(" \n"))
+            print("Loading....")
+            time.sleep(3)
+            code_gen()
+        case 2:
+            num_days()
+        case 3:
+            print("Please contact us on 08600 3344 333 or email us at entry@devdigital.co.za")
+
+def sign_up():
+    try:
+        usrname = str(input("Name: \n"))
+        surname = str(input("Surname: \n"))
+    except:
+        print("Only letters allowed")
+
+    emailaddr = str(input("email: \n"))
+    pass_w = str(input("Password: \n"))
+    pass_c = str(input("Confirm Password: \n"))
+    if pass_w != pass_c:
+        messagebox.showerror(title="Match Error", message="Password Does not Match")
+
+    else:
+        with open('database.txt', 'a') as db:
+            creds = usrname[0] + surname
+            db.write("\n")
+            db.write("Username: {us} - Name: {n} - Surname: {s} - email: {e} - Password: {p} - Confirm Pass: {cp}".format(us=creds,n=usrname, s=surname,e=emailaddr,p=pass_w, cp=pass_c))
+            
+            
+
 def code_gen():
+    
     for i in range(6000, 7000, 4):
         if house_num in house_numbers:
             print("Your Boom pass been generated: ", house_key)
@@ -105,7 +146,24 @@ def num_days():
             formula = custom_days * 1
             print("Your Code has been generated: ", secret_key, "This will be valid till 23:59 on the {} day from today".format(formula))
 
-def log_usr():
+
+def menu():
+
+    print(1, "Login")
+    print(2, "Sign Up")
+    opt = int(input("\n"))
+
+    match opt:
+        case 1:
+            auth()
+        case 2:
+            print("Redirecting to sign page")
+            time.sleep(2)
+            sign_up()
+
+    
+def auth():
+
     try:
         value1 = str(input("Enter Username: \n"))
     except:
@@ -113,14 +171,14 @@ def log_usr():
 
     value2 = str(input("Enter Password: \n"))
     
-    if value1 in user_name and value2 in pass_name:
+    if value1 == user_name and value2 == pass_name:
         print("Initializing....")
         time.sleep(3)
         print("Verifying details....")
         time.sleep(3)
         print("Successfully Logged In")
         time.sleep(2)
-        num_days()
+        main_menu()
     else:
         print("Incorrect username or Password")
 
@@ -142,28 +200,17 @@ def verific():
             print("Token: ", token)
     else:
         print("Unable to Verify your boom pass!")
-            #print("token:", token)
-print(1, "Enter House Number")
-print(2, "Generate Code")
-print(3, "Help")
-option = int(input("\n"))
-match option:
-    case 1:
-        print("Enter House Number")
-        house_num = int(input(" \n"))
-        print("Loading....")
-        time.sleep(3)
-        code_gen()
-    case 2:
-        log_usr()
-    case 3:
-        print("Please contact us on 08600 3344 333 or email us at entry@devdigital.co.za")
+
 #write a log file to capture entries
 access_code = randint(20000, 99999)
 # with open('logs.txt', 'a') as log:
 #     log.write("Unique Code {C} - Generated at: {time} ".format(C=access_code, time=now))
-
-
 def read_logs():
     with open('logs.txt', 'r') as log:
         print(log.read())
+
+menu()
+
+
+
+
