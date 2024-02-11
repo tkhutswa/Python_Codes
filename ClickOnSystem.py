@@ -7,6 +7,15 @@ from threading import Timer
 import time
 from datetime import datetime
 from datetime import date
+import dotenv
+from dotenv import load_dotenv
+import os
+
+load_dotenv('env')
+
+user_name: str = os.getenv('USERNAME')
+pass_name: str = os.getenv('PASSWORD')
+
 
 now = datetime.now()
 
@@ -76,6 +85,24 @@ def num_days():
             formula = custom_days * 1
             print("Your Code has been generated: ", secret_key, "This will be valid till 23:59 on the {} day from today".format(formula))
 
+def log_usr():
+    try:
+        value1 = str(input("Enter Username: \n"))
+    except:
+        print("Username in letters Only")
+
+    value2 = str(input("Enter Password: \n"))
+    
+    if value1 in user_name and value2 in pass_name:
+        print("Initializing....")
+        time.sleep(3)
+        print("Verifying details....")
+        time.sleep(3)
+        print("Successfully Logged In")
+        time.sleep(2)
+        num_days()
+    else:
+        print("Incorrect username or Password")
 
 def verific():
     time.sleep(2)
@@ -108,7 +135,7 @@ match option:
         time.sleep(3)
         code_gen()
     case 2:
-        num_days()
+        log_usr()
     case 3:
         print("Please contact us on 08600 3344 333 or email us at entry@devdigital.co.za")
 #write a log file to capture entries
@@ -120,4 +147,3 @@ access_code = randint(20000, 99999)
 def read_logs():
     with open('logs.txt', 'r') as log:
         print(log.read())
-
