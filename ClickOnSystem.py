@@ -1,5 +1,6 @@
 #Incoperate the clickOn system security control
 import random
+import tkinter as Tk
 import time
 from random import randint
 import csv
@@ -10,6 +11,13 @@ from datetime import date
 import dotenv
 from dotenv import load_dotenv
 import os
+from tkinter import messagebox
+from time import strftime
+
+c_time = strftime('%H:%M:%S: %p')
+# after(1000,c_time)
+print(c_time)
+
 
 load_dotenv('env')
 
@@ -19,7 +27,7 @@ pass_name: str = os.getenv('PASSWORD')
 
 now = datetime.now()
 
-print("WELCOME TO THE CLICK-ON SYSTEM")
+print("WELCOME TO THE CLICK-ON SYSTEM - {}".format(c_time))
 
 logs = []
 keys = []
@@ -147,3 +155,8 @@ access_code = randint(20000, 99999)
 def read_logs():
     with open('logs.txt', 'r') as log:
         print(log.read())
+
+
+
+
+
