@@ -53,6 +53,11 @@ def code_gen():
             print("House Not Found!")
             break
 
+def log_read():
+    with open('logs.txt', 'r') as logs:
+        print(logs.read())
+
+
 def user_menu():
     print(1, "Request Code")
     print(2, "Access History")
@@ -68,24 +73,31 @@ def num_days():
     print(1, "Today")
     print(2, "Tomorrow")
     print(3, "Custom")
+    print(4, "History")
     nr_days = int(input(""))
-    print("Requesting Code.....Please be patient")
+    #print("Requesting Code.....Please be patient")
     time.sleep(4)
     # access_code = randint(20000, 99999)
     if nr_days == 1:
+        print("Generating code....")
         time.sleep(2)
         print("Your Code has been generated: ", secret_key, "on {}".format(now), "This will be valid till 23:59 today")
-        with open('logs.txt', 'a') as log:
+        with open('logs_clicksys.txt', 'a') as log:
             log.write("\n")
             log.write("App Generated - Unique Code {C} - Generated at: {time} ".format(C=secret_key, time=now))
 
     elif nr_days == 2:
+        print("Generating code....")
         time.sleep(2)
         print("Your Access Code is: ", secret_key, "This will be valid till tomorrow 23:59")
         with open('logs.txt', 'a') as log:
             log.write("App Generated - Unique Code {C} - Generated at: {time} ".format(C=secret_key, time=now))
         #elif nr_days == 2:
             #print("Your Access Code is: ", access_code, "Valid till tomorrow 23:59")
+    elif nr_days == 4:
+        print("fetching data....")
+        time.sleep(2)
+        log_read()
     else:
         if nr_days == 3:
             print("Specify timeline in 'days' between 3 - 5 days")
@@ -155,8 +167,3 @@ access_code = randint(20000, 99999)
 def read_logs():
     with open('logs.txt', 'r') as log:
         print(log.read())
-
-
-
-
-
