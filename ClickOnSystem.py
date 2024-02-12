@@ -1,4 +1,4 @@
-#Incoperate the clickOn system security control
+#Access Control System - Developed by T@.com
 import random
 import tkinter as Tk
 import time
@@ -13,21 +13,22 @@ from dotenv import load_dotenv
 import os
 from tkinter import messagebox
 from time import strftime
+import pytz
 
 c_time = strftime('%H:%M:%S: %p')
 # after(1000,c_time)
 print(c_time)
 
+c_time = datetime.now(pytz.timezone('Africa/Johannesburg'))
 
 load_dotenv('env')
 
 user_name: str = os.getenv('USERNAME')
 pass_name: str = os.getenv('PASSWORD')
 
-
 now = datetime.now()
 
-print("WELCOME TO THE CLICK-ON SYSTEM - {}".format(c_time))
+print("Access Control System - {}".format(c_time))
 
 logs = []
 keys = []
@@ -41,7 +42,7 @@ for i in range(6600, 7000, 4):
 
 def main_menu():           #print("token:", token)
     global house_num
-    print(1, "Enter House Number")
+    print(1, "Enter House Number - 6600 - 6999")
     print(2, "Generate Code")
     print(3, "Help")
     option = int(input("\n"))
@@ -58,9 +59,10 @@ def main_menu():           #print("token:", token)
             print("Please contact us on 08600 3344 333 or email us at entry@devdigital.co.za")
 
 def sign_up():
+    global pass_c
     try:
-        usrname = str(input("Name: \n"))
-        surname = str(input("Surname: \n"))
+        usrname = str(input("Please Enter Your Name: \n"))
+        surname = str(input("Enter Your Surname: \n"))
     except:
         print("Only letters allowed")
 
@@ -72,11 +74,23 @@ def sign_up():
 
     else:
         with open('database.txt', 'a') as db:
+            print("Sucessfully Registered..")
+            time.sleep(2)
+            global creds
             creds = usrname[0] + surname
-            db.write("\n")
-            db.write("Username: {us} - Name: {n} - Surname: {s} - email: {e} - Password: {p} - Confirm Pass: {cp}".format(us=creds,n=usrname, s=surname,e=emailaddr,p=pass_w, cp=pass_c))
+            usr_write()
+            time.sleep(2)
+
+            # db.write("\n")
+            # db.write("Username: {us} - Name: {n} - Surname: {s} - email: {e} - Password: {p} - Confirm Pass: {cp}".format(us=creds,n=usrname, s=surname,e=emailaddr,p=pass_w, cp=pass_c))
             
-            
+def usr_write():
+    with open('usrnames.txt', 'a') as db1:
+        db1.write("\n")
+        db1.write(creds)
+        db1.write(pass_c)
+        db1.write("\n")
+        menu()
 
 def code_gen():
     
@@ -146,7 +160,6 @@ def num_days():
             formula = custom_days * 1
             print("Your Code has been generated: ", secret_key, "This will be valid till 23:59 on the {} day from today".format(formula))
 
-
 def menu():
 
     print(1, "Login")
@@ -161,7 +174,6 @@ def menu():
             time.sleep(2)
             sign_up()
 
-    
 def auth():
 
     try:
@@ -210,7 +222,3 @@ def read_logs():
         print(log.read())
 
 menu()
-
-
-
-
