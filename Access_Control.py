@@ -1,3 +1,5 @@
+#Access_control_v2
+
 #Access Control System - Developed by T@.com
 import random
 import tkinter as Tk
@@ -14,6 +16,7 @@ import os
 from tkinter import messagebox
 from time import strftime
 import pytz
+import sqlite3
 
 c_time = strftime('%H:%M:%S: %p')
 # after(1000,c_time)
@@ -37,7 +40,7 @@ secret_key = randint(10000, 99999)
 house_key = secret_key
 house_numbers = []
 max_length = 5
-for i in range(6600, 7000, 4):
+for i in range(6600, 7000, 1):
     house_numbers.append(i)
 
 def main_menu():           #print("token:", token)
@@ -60,6 +63,10 @@ def main_menu():           #print("token:", token)
 
 def sign_up():
     global pass_c
+    global surname
+    global emailaddr
+    global pass_w
+    global pass_c
     try:
         usrname = str(input("Please Enter Your Name: \n"))
         surname = str(input("Enter Your Surname: \n"))
@@ -73,18 +80,46 @@ def sign_up():
         messagebox.showerror(title="Match Error", message="Password Does not Match")
 
     else:
-        with open('database.txt', 'a') as db:
-            print("Sucessfully Registered..")
-            time.sleep(2)
-            global creds
-            creds = usrname[0] + surname
-            usr_write()
-            time.sleep(2)
 
-            # db.write("\n")
-            # db.write("Username: {us} - Name: {n} - Surname: {s} - email: {e} - Password: {p} - Confirm Pass: {cp}".format(us=creds,n=usrname, s=surname,e=emailaddr,p=pass_w, cp=pass_c))
+        conn = sqlite3.connect('users')
+        x = conn.cursor()
+        print("wait while we commiting to the database...")
+        time.sleep(2)
+        x.execute("INSERT INTO users ('username','password') VALUES (?,?)", (usrname,pass_c))
+        conn.commit()
+        print("commit successful!")
+        x.execute("SELECT * FROM users")        
+        time.sleep(1)
+
+        x.close()
+        conn.close()
             
 def usr_write():
+    conek = sqlite3.connect('sql_logs')
+    c = conek.cursor()
+
+    c.execute("""CREATE TABLE main (
+                name text,
+                surname text,
+                email text,
+                password text,
+                confirm_password text
+              )""")
+    print("Creating database, Please be patient...")
+    time.sleep(3)
+    print("Database created successfully")
+    time.sleep(2)
+    conek.commit()
+
+    c.execute("INSERT INTO main ('','','','',) VALUES(?,?,?,?,?)", (user_name,surname,emailaddr,pass_w, pass_c))
+    print("Successfully parsed onto main sqlite3 database")
+    conek.commit()
+
+    c.execute("SELECT * FROM main")
+    print(c.fetchall())
+    conek.close()
+
+
     with open('usrnames.txt', 'a') as db1:
         db1.write("\n")
         db1.write(creds)
@@ -94,7 +129,7 @@ def usr_write():
 
 def code_gen():
     
-    for i in range(6000, 7000, 4):
+    for i in range(6000, 7000, 1):
         if house_num in house_numbers:
             print("Your Boom pass been generated: ", house_key)
             with open('logs.txt', 'a') as log:
@@ -146,7 +181,10 @@ def num_days():
         time.sleep(2)
         print("Your Access Code is: ", secret_key, "This will be valid till tomorrow 23:59")
         with open('logs.txt', 'a') as log:
-            log.write("App Generated - Unique Code {C} - Generated at: {time} ".format(C=secret_key, time=now))
+            for i in log:
+                log.write("App Generated - Unique Code {C} - Generated at: {time} ".format(C=secret_key, time=now))
+                break
+            
         #elif nr_days == 2:
             #print("Your Access Code is: ", access_code, "Valid till tomorrow 23:59")
     elif nr_days == 4:
@@ -164,6 +202,7 @@ def menu():
 
     print(1, "Login")
     print(2, "Sign Up")
+    print(3, "Help")
     opt = int(input("\n"))
 
     match opt:
@@ -173,6 +212,9 @@ def menu():
             print("Redirecting to sign page")
             time.sleep(2)
             sign_up()
+        case 3:
+            print("Please contact us on 08600 3344 333 or email us at entry@devdigital.co.za")
+
 
 def auth():
 
@@ -182,36 +224,62 @@ def auth():
         print("Username in letters Only")
 
     value2 = str(input("Enter Password: \n"))
+
+    print("connecting to sqlite database....")
+    time.sleep(2)
+    print("Resolving DNS to sqlite3_Users.db....")
+    time.sleep(2)
+    conn = sqlite3.connect('users')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users")
+    verify = c.fetchall()
+    #print(verify)
+    for i in verify:
+        #print(i)
+        if value1 in i and value2 in i:
+            print("Initializing....")
+            time.sleep(3)
+            print("connecting to sqlite database....")
+            time.sleep(2)
+            print("Verifying details....")
+            time.sleep(3)
+            print("Successfully Logged In")
+            time.sleep(2)
+            main_menu()
+            break
+        else:
+            print("Invalid User or Password")
+            break
     
-    if value1 == user_name and value2 == pass_name:
-        print("Initializing....")
-        time.sleep(3)
-        print("Verifying details....")
-        time.sleep(3)
-        print("Successfully Logged In")
-        time.sleep(2)
-        main_menu()
-    else:
-        print("Incorrect username or Password")
+    # if value1 == user_name and value2 == pass_name:
+    #     print("Initializing....")
+    #     time.sleep(3)
+    #     print("Verifying details....")
+    #     time.sleep(3)
+    #     print("Successfully Logged In")
+    #     time.sleep(2)
+    #     main_menu()
+    # else:
+    #     print("Incorrect username or Password")
 
 def verific():
     time.sleep(2)
     boom_pass = int(input("Enter Your Boom Pass: \n"))
 
-    if boom_pass >= max_length or boom_pass < 5:
+    if boom_pass > max_length and boom_pass < 5:
         print("Max 5 characters allowed, Please try again")
-        boom_pass = int(input("Enter Your Boom Pass: \n"))
+        boom_pass = int(input("Enter Your Boom Pass:1 \n"))
 
-
-    if boom_pass == house_key:
-            print("Please wait while we verify your Boom Pass......")
-            time.sleep(5)
-            print("Boom successfully Opened")
-            token = True
-            time.sleep(2)
-            print("Token: ", token)
     else:
-        print("Unable to Verify your boom pass!")
+        if boom_pass == house_key:
+                print("Please wait while we verify your Boom Pass......")
+                time.sleep(5)
+                print("Boom successfully Opened")
+                token = True
+                time.sleep(2)
+                print("Token: ", token)
+        else:
+            print("Unable to Verify your boom pass!")
 
 #write a log file to capture entries
 access_code = randint(20000, 99999)
