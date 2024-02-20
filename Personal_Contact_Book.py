@@ -96,9 +96,7 @@ def edit_menu():
             edit_number()
         case 5:
             edit_password()
-
-    
-
+            
 def view_db():
     conn = sqlite3.connect('contact_book')
     c = conn.cursor()
@@ -213,11 +211,6 @@ def user_reg():
     number = int(input("Enter Number: \n"))
     password = str(input("Enter Password: \n"))
     c_password = str(input("Confirm Password: \n"))
-
-    # for i in range(0, 1):
-    #     if password != confirm_password:
-    #         print("Password do not match try again")
-    #         break
     print("Connecting to db, Please be patient...")
     time.sleep(2)
     conn = sqlite3.connect('contact_book')
