@@ -6,9 +6,7 @@ def verify():
     global score
     Q1 = int(input("How many Seasons do we have in a year? \n"))
     Q2 = str(input("What is the most attractive citities in South Africa: \n"))
-
-
-        
+    
     if Q1 in answers:
         score += 1
     elif Q2 in answers:
@@ -22,14 +20,10 @@ def verify():
         else:
             print("You Lost")
         
-
         print("Your score is: {}".format(score))
 
 print("Welcome to the Quiz Game - Have fun!!")
 verify()
-
-
-
 
 
 
