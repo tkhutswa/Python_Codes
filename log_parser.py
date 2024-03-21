@@ -10,4 +10,4 @@ for i in log.values():
 #another way we can do it is to call both keys and value and iterate from there:
 
 for key, value in log.items():
-    print(key+ value)
+    print(f"{key} : {value}")
