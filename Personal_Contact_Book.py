@@ -5,6 +5,21 @@ import sqlite3
 from time import strftime
 from random import *
 
+
+# conn = sqlite3.connect('contact_book.db')
+# c = conn.cursor()
+# c.execute("""create table contacts(
+#     name text,
+#     surname text,
+#     email ANY,
+#     number interger,
+#     password ANY
+# ) 
+#           """)
+# conn.commit()
+# conn.close()
+# print("Success")
+
 current_time = strftime('%H:%M:%S: %p')
 
 def main_menu():
@@ -49,12 +64,11 @@ def auth():
     time.sleep(2)
     print("Resolving DNS to sqlite3_Users.db....")
     time.sleep(2)
-    conn = sqlite3.connect('contact_book')
-    print("Successfully connected to DB")
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM contact_book")
+    print("Successfully connected to DB")
+    c.execute("SELECT * FROM contacts")
     verify = c.fetchall()
-    
     print("Reading from database....")
     time.sleep(2)
     # print(verify)
@@ -71,7 +85,7 @@ def auth():
             user_menu()
         else:
             print("Invalid User or Password")
-            auth()
+            main_menu()
 
 def user_menu():
     print("Welcome {}! - Please select an option".format(username))
@@ -120,9 +134,9 @@ def edit_menu():
 
     
 def view_db():
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book' ORDER BY name")
+    c.execute("SELECT * FROM 'contacts' ORDER BY name")
     view_all = c.fetchall()
     print(view_all)
     time.sleep(4)
@@ -166,10 +180,10 @@ def edit_name():
     print("New Name: \n")
     time.sleep(2)
     rename = str(input("\n"))
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book'")
-    c.execute("UPDATE contact_book SET name = '{}' ".format(rename))
+    c.execute("SELECT * FROM 'contacts'")
+    c.execute("UPDATE contacts SET name = '{}' ".format(rename))
     conn.commit()
     print("Successfully Updated")
     time.sleep(3)
@@ -179,10 +193,10 @@ def edit_surname():
     print("New Surname: \n")
     time.sleep(2)
     rename = str(input("\n"))
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book'")
-    c.execute("UPDATE contact_book SET surname = '{}' ".format(rename))
+    c.execute("SELECT * FROM 'contacts'")
+    c.execute("UPDATE contacts SET surname = '{}' ".format(rename))
     conn.commit()
     print("Successfully Updated")
     time.sleep(3)
@@ -192,10 +206,10 @@ def edit_email():
     print("New Email: \n")
     time.sleep(2)
     rename = str(input("\n"))
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book'")
-    c.execute("UPDATE contact_book SET email = '{}' ".format(rename))
+    c.execute("SELECT * FROM 'contacts'")
+    c.execute("UPDATE contacts SET email = '{}' ".format(rename))
     conn.commit()
     print("Successfully Updated")
     time.sleep(3)
@@ -205,10 +219,10 @@ def edit_number():
     print("New Number: \n")
     time.sleep(2)
     rename = int(input("\n"))
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book'")
-    c.execute("UPDATE contact_book SET number = '{}' ".format(rename))
+    c.execute("SELECT * FROM 'contacts'")
+    c.execute("UPDATE contacts SET number = '{}' ".format(rename))
     conn.commit()
     print("Successfully updated")
     time.sleep(3)
@@ -219,10 +233,10 @@ def edit_password():
     time.sleep(2)
     pass_ = input("Enter New Password")
     c_pass = input("Confirm Password")
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM 'contact_book'")
-    c.execute("UPDATE contact_book SET password = '{}' ".format(c_pass))
+    c.execute("SELECT * FROM 'contacts'")
+    c.execute("UPDATE contacts SET password = '{}' ".format(c_pass))
     conn.commit()
     print("Successfully Updated")
     time.sleep(3)
@@ -230,11 +244,11 @@ def edit_password():
 
 def delete():
     print("Delete Record")
-    conn = sqlite3.connect('contact_book')
+    conn = sqlite3.connect('contact_book.db')
     c = conn.cursor()
     row = 3
     entry = (row,)
-    c.execute("DELETE FROM contact_book WHERE rowid =;", entry)
+    c.execute("DELETE FROM contacts WHERE rowid =;", entry)
     conn.commit()
     conn.close()
 

@@ -64,7 +64,7 @@ def code_gen():
             pass_logger()
             clear()
             
-            otp_view=Label(root, text=code_gen)
+            otp_view=Label(root, text=code_gen) 
             
         
         else:
