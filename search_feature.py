@@ -1,7 +1,5 @@
-import pandas
+import pandas as pd
 import string
-import time
+import datetime
+from datetime import time
 
-print("Searching, please wait a moment....)
-if search_word > 10
-  time.sleep(5)
